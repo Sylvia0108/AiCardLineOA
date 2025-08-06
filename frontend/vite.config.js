@@ -1,0 +1,17 @@
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    // 設定代理以解決開發時的跨域問題
+    proxy: {
+      // 將 /api 的請求轉發到後端伺服器
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+      },
+    }
+  }
+})
