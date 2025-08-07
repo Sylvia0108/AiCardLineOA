@@ -3,7 +3,6 @@ body {
     Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(135deg, #4a90e2 0%, #357abd 50%, #1e5f99 100%);
   color: #333;
   min-height: 100vh;
   margin: 0;
@@ -15,15 +14,26 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 20px;
+  padding-top: 0;
 }
 
 /* 登入頁面 */
 .login-page {
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
+  background: linear-gradient(90deg, #10A3E9 0%, #2564EA 100%);
+  min-height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5vh 5vw;
+  box-sizing: border-box;
+  overflow-y: auto;
 }
 
 /* 主控台頁面 */
@@ -33,221 +43,45 @@ body {
   text-align: center;
 }
 
-/* 頁面標題 */
-.header {
-  margin-bottom: 30px;
-}
+/* 頁面標題 - 移除重複樣式，使用 Header.css */
 
-.app-title {
-  font-size: 48px;
-  font-weight: bold;
-  color: white;
-  margin: 0 0 8px 0;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
 
-.app-subtitle {
-  font-size: 18px;
-  color: white;
-  margin: 0;
-  opacity: 0.9;
-}
-
-.welcome-text {
-  font-size: 24px;
-  font-weight: bold;
-  color: white;
-  margin: 0 0 30px 0;
-}
-
-/* 登入卡片 */
+/* 登入卡片容器 */
 .login-container {
   width: 100%;
-}
-
-.login-card {
-  background-color: white;
-  border-radius: 16px;
-  padding: 40px 30px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  border: 2px dashed #b8cce8;
-}
-
-/* 用戶圖標區域 */
-.user-icon-container {
-  margin-bottom: 30px;
-  padding: 20px;
-  border: 2px dashed #b8cce8;
-  border-radius: 12px;
-  background-color: #f8faff;
-}
-
-.user-icon {
+  max-width: 360px;
   display: flex;
-  justify-content: center;
-  margin-bottom: 15px;
+  flex-direction: column;
+  min-height: 0;
+  flex: 0 0 auto;
 }
 
-.login-instruction {
-  font-size: 16px;
-  color: #666;
-  margin: 0;
-  font-weight: 500;
+/* 底部空間 */
+.bottom-spacer {
+  flex: 0.7;
+  min-height: 5vh;
 }
 
-/* 隱私條款勾選 */
-.terms-container {
-  margin: 25px 0;
-  padding: 15px;
-  border: 2px dashed #b8cce8;
-  border-radius: 8px;
-  background-color: #f8faff;
-}
-
-.terms-checkbox {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  font-size: 14px;
-  color: #555;
-  cursor: pointer;
-  line-height: 1.4;
-  text-align: left;
-}
-
-.terms-checkbox input[type="checkbox"] {
-  margin: 0;
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-}
-
-.terms-link {
-  color: #4a90e2;
-  text-decoration: underline;
-}
-
-/* LINE 登入按鈕 */
-.line-login-button {
-  width: 100%;
-  background: linear-gradient(135deg, #06c755 0%, #05b04a 100%);
-  color: white;
-  border: none;
-  padding: 15px 20px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 20px;
-}
-
-.line-login-button:hover:not(:disabled) {
-  background: linear-gradient(135deg, #05b04a 0%, #049b3d 100%);
-  transform: translateY(-1px);
-}
-
-.line-login-button:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
-  opacity: 0.6;
-  transform: none;
-}
-
-.line-icon {
-  background-color: white;
-  color: #06c755;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-/* 錯誤訊息 */
-.error-message {
-  color: #d32f2f;
-  background-color: #ffebee;
-  padding: 10px;
-  border-radius: 6px;
-  font-size: 14px;
-  margin: 15px 0;
-  border-left: 4px solid #d32f2f;
-}
-
-/* 用戶資料卡片 */
-.profile-card {
-  background-color: white;
-  border-radius: 16px;
-  padding: 40px 30px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.profile-info {
-  margin: 30px 0;
-}
-
-.profile-picture {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  border: 3px solid #e3f2fd;
-  margin-bottom: 15px;
-}
-
-.user-name {
-  font-size: 20px;
-  font-weight: bold;
-  color: #333;
-  margin: 10px 0 5px 0;
-}
-
-.user-id {
-  font-size: 14px;
-  color: #666;
-  margin: 0;
-}
-
-.logout-button {
-  background-color: #f5f5f5;
-  color: #666;
-  border: 1px solid #ddd;
-  padding: 12px 25px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 20px;
-}
-
-.logout-button:hover:not(:disabled) {
-  background-color: #eeeeee;
-  border-color: #ccc;
-}
-
-.logout-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-.status-message {
-  margin-top: 20px;
-  background-color: #e8f5e8;
-  padding: 15px;
-  border-radius: 8px;
-  color: #2e7d2e;
-  font-weight: 500;
-  border-left: 4px solid #4caf50;
-}
-
+/* 全域錯誤樣式 */
 .error {
   color: #d32f2f;
   background-color: #ffcdd2;
   padding: 15px;
   border-radius: 8px;
+}
+
+/* 手機響應式樣式 */
+@media (max-width: 480px) {
+  .login-page {
+    padding: 3vh 12px;
+    min-height: 100vh;
+  }
+}
+
+/* 極小螢幕 */
+@media (max-width: 375px) {
+  .login-page {
+    padding: 2vh 8px;
+    min-height: 100vh;
+  }
 }

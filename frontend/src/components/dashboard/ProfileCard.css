@@ -1,0 +1,144 @@
+/* ProfileCard 樣式 */
+.profile-card {
+  background: linear-gradient(135deg, white 0%, #fafbff 100%);
+  border-radius: 20px;
+  padding: 40px 32px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  text-align: center;
+  max-width: 400px;
+  margin: 0 auto;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.profile-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.profile-card h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0 0 32px 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.profile-info {
+  margin: 32px 0;
+  padding: 24px;
+  background: linear-gradient(135deg, #f8faff 0%, #f0f5ff 100%);
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.profile-info:hover {
+  background: linear-gradient(135deg, #f0f5ff 0%, #e8f0ff 100%);
+  border-color: #cbd5e0;
+}
+
+.profile-picture {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 4px solid #e3f2fd;
+  margin: 0 auto 20px auto;
+  display: block;
+  object-fit: cover;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.profile-picture:hover {
+  transform: scale(1.05);
+  border-color: #bbdefb;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.user-name {
+  font-size: 20px;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 16px 0 8px 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.user-id {
+  font-size: 14px;
+  color: #718096;
+  margin: 0;
+  font-family: 'Courier New', monospace;
+  background: rgba(113, 128, 150, 0.1);
+  padding: 4px 8px;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+/* 響應式設計 */
+@media (max-width: 480px) {
+  .profile-card {
+    padding: 32px 24px;
+    border-radius: 16px;
+    margin: 0 8px;
+  }
+  
+  .profile-card h2 {
+    font-size: 20px;
+    margin-bottom: 24px;
+  }
+  
+  .profile-info {
+    margin: 24px 0;
+    padding: 20px;
+    border-radius: 12px;
+  }
+  
+  .profile-picture {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 16px;
+  }
+  
+  .user-name {
+    font-size: 18px;
+    margin: 12px 0 6px 0;
+  }
+  
+  .user-id {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 375px) {
+  .profile-card {
+    padding: 28px 20px;
+    margin: 0 4px;
+  }
+  
+  .profile-card h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .profile-info {
+    margin: 20px 0;
+    padding: 16px;
+  }
+  
+  .profile-picture {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 12px;
+  }
+  
+  .user-name {
+    font-size: 16px;
+    margin: 10px 0 4px 0;
+  }
+  
+  .user-id {
+    font-size: 12px;
+  }
+}

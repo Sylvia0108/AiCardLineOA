@@ -1,0 +1,68 @@
+.header {
+  text-align: center;
+  padding: 0;
+  margin: 0 0 4vh 0;
+  width: 100%;
+}
+
+.app-title {
+  color: white;
+  font-size: clamp(32px, 8vw, 48px);
+  font-weight: 800;
+  font-family: "Noto Sans";
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+  margin-top: 0;
+}
+
+.app-subtitle {
+  color: white;
+  font-size: clamp(14px, 3.5vw, 18px);
+  font-weight: 300;
+  opacity: 0.9;
+  margin: 0;
+}
+
+/* 響應式設計 - 手機螢幕 */
+@media (max-width: 480px) {
+  .header {
+    margin: 0 0 3vh 0;
+  }
+  
+  .app-title {
+    font-size: 28px;
+    margin-bottom: 6px;
+  }
+  
+  .app-subtitle {
+    font-size: 14px;
+  }
+}
+
+/* 極小螢幕 (iPhone SE 等) */
+@media (max-width: 375px) {
+  .header {
+    margin: 0 0 2vh 0;
+  }
+  
+  .app-title {
+    font-size: 24px;
+    margin-bottom: 4px;
+  }
+  
+  .app-subtitle {
+    font-size: 12px;
+  }
+}
+
+/* 大螢幕手機 (iPhone 14 Pro Max 等) */
+@media (min-width: 481px) and (max-width: 768px) {
+  .app-title {
+    font-size: 40px;
+    margin-bottom: 10px;
+  }
+  
+  .app-subtitle {
+    font-size: 18px;
+  }
+}

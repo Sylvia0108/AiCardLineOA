@@ -1,0 +1,71 @@
+/* 登出按鈕樣式 */
+.logout-button {
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+  color: #4a5568;
+  border: 2px solid #e2e8f0;
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.logout-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.05), transparent);
+  transition: left 0.5s ease;
+}
+
+.logout-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #e8e8e8 0%, #d8d8d8 100%);
+  border-color: #cbd5e0;
+  color: #2d3748;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.logout-button:hover:not(:disabled)::before {
+  left: 100%;
+}
+
+.logout-button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logout-button:disabled {
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+  box-shadow: none;
+  border-color: #e2e8f0;
+}
+
+/* 響應式設計 */
+@media (max-width: 480px) {
+  .logout-button {
+    padding: 10px 24px;
+    font-size: 15px;
+    border-radius: 10px;
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 375px) {
+  .logout-button {
+    padding: 8px 20px;
+    font-size: 14px;
+    border-radius: 8px;
+    margin-top: 16px;
+  }
+}

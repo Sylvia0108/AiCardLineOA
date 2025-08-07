@@ -1,0 +1,58 @@
+/* LoginCard 樣式 */
+.login-card {
+  background-color: white;
+  border-radius: 20px;
+  padding: clamp(20px, 4vw, 28px);
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
+  width: min(82vw, 360px);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 3vw, 16px);
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+/* 歡迎使用標題 */
+.welcome-text {
+  font-size: clamp(18px, 5vw, 24px);
+  font-weight: 700;
+  color: #1F2937;
+  margin: 0 0 clamp(8px, 2vw, 12px) 0;
+  text-align: center;
+}
+
+.login-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* 響應式設計 */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 18px;
+    gap: 12px;
+    margin: 0 auto;
+    width: min(88vw, 330px);
+    border-radius: 16px;
+  }
+  
+  .welcome-text {
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+}
+
+@media (max-width: 375px) {
+  .login-card {
+    padding: 16px;
+    gap: 10px;
+    margin: 0 auto;
+    width: min(90vw, 300px);
+  }
+  
+  .welcome-text {
+    font-size: 16px;
+    margin-bottom: 2px;
+  }
+}

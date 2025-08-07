@@ -1,0 +1,40 @@
+/* UserIconPrompt 樣式 */
+.user-icon-container {
+  text-align: center;
+  padding: 0;
+  background: transparent;
+  transition: all 0.3s ease;
+  margin-bottom: 12px;
+}
+
+.user-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8px;
+  transition: transform 0.3s ease;
+}
+
+.user-icon:hover {
+  transform: scale(1.05);
+}
+
+.user-icon svg {
+  drop-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: clamp(80px, 20vw, 100px);
+  height: clamp(80px, 20vw, 100px);
+}
+
+.login-instruction {
+  font-size: 14px;
+  color: #4B5563;
+  margin: 0;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* 響應式文字大小 */
+.login-instruction {
+  font-size: clamp(12px, 3.5vw, 14px);
+}
