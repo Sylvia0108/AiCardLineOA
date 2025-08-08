@@ -1,53 +1,40 @@
 .header {
-  text-align: center;
-  padding: 0;
-  margin: 0 0 4vh 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 32px 0;
+  color: #ffffff;
   width: 100%;
 }
 
 .app-title {
-  color: white;
-  font-size: clamp(32px, 8vw, 48px);
-  font-weight: 800;
-  font-family: "Noto Sans";
-  letter-spacing: 0.05em;
-  margin-bottom: 8px;
-  margin-top: 0;
+  font-family: 'Noto Sans', sans-serif;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 24px;
+  margin: 0;
+  color: #ffffff;
 }
 
 .app-subtitle {
-  color: white;
-  font-size: clamp(14px, 3.5vw, 18px);
-  font-weight: 300;
-  opacity: 0.9;
+  font-family: 'Maven Pro', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
   margin: 0;
+  color: #ffffff;
 }
 
 /* 響應式設計 - 手機螢幕 */
 @media (max-width: 480px) {
   .header {
-    margin: 0 0 3vh 0;
+    padding: 24px 0;
+    gap: 12px;
   }
   
   .app-title {
-    font-size: 28px;
-    margin-bottom: 6px;
-  }
-  
-  .app-subtitle {
-    font-size: 14px;
-  }
-}
-
-/* 極小螢幕 (iPhone SE 等) */
-@media (max-width: 375px) {
-  .header {
-    margin: 0 0 2vh 0;
-  }
-  
-  .app-title {
-    font-size: 24px;
-    margin-bottom: 4px;
+    font-size: 32px;
   }
   
   .app-subtitle {
@@ -55,14 +42,34 @@
   }
 }
 
-/* 大螢幕手機 (iPhone 14 Pro Max 等) */
-@media (min-width: 481px) and (max-width: 768px) {
+/* 極小螢幕 (iPhone SE 等) */
+@media (max-width: 375px) {
+  .header {
+    padding: 20px 0;
+    gap: 10px;
+  }
+  
   .app-title {
-    font-size: 40px;
-    margin-bottom: 10px;
+    font-size: 28px;
   }
   
   .app-subtitle {
-    font-size: 18px;
+    font-size: 11px;
+  }
+}
+
+/* 大螢幕手機 (iPhone 14 Pro Max 等) */
+@media (min-width: 481px) and (max-width: 768px) {
+  .header {
+    padding: 28px 0;
+    gap: 14px;
+  }
+  
+  .app-title {
+    font-size: 36px;
+  }
+  
+  .app-subtitle {
+    font-size: 13px;
   }
 }
