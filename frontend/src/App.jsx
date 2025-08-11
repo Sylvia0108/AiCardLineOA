@@ -1,43 +1,45 @@
-import { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; // ✅ 新增 Router
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import liff from "@line/liff";
 import "./App.css";
-
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
-import LiffLoginRedirect from "./pages/LiffLoginRedirect"; // ✅ 新增的路由頁面
-import DownloadPage from "./pages/DownloadPage"; // ✅ 下載頁面
-import PhoneVerificationPage from "./pages/PhoneVerificationPage"; // ✅ 手機驗證頁面
+import DownloadPage from "./pages/DownloadPage";
+import PhoneVerificationPage from "./pages/PhoneVerificationPage";
+import LiffLoginRedirect from "./pages/LiffLoginRedirect";
+import { useLiff } from "./context/useLiff";
 
 function App() {
-  const [loading, setLoading] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [profile, setProfile] = useState(null);
-  const [error, setError] = useState("");
+  const {
+    isLoggedIn,
+    userProfile,
+    phoneVerified,
+    loading,
+    error: liffError,
+    logout,
+  } = useLiff();
+
   const [backendMessage, setBackendMessage] = useState("");
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [error, setError] = useState("");
 
+  // 合併錯誤訊息
+  const displayError = error || liffError;
+
+  // 處理根據手機驗證狀態的重導向
   useEffect(() => {
-    const initializeLiff = async () => {
-      try {
-        await liff.init({ liffId: import.meta.env.VITE_LIFF_ID });
+    // 只有在沒有錯誤且LIFF準備好的情況下才處理重導向
+    if (liffError || !isLoggedIn) return;
 
-        if (liff.isLoggedIn()) {
-          setIsLoggedIn(true);
-          const userProfile = await liff.getProfile();
-          setProfile(userProfile);
-          sendProfileToBackend(userProfile);
-        } else {
-          setIsLoggedIn(false);
-        }
-      } catch (e) {
-        setError(`LIFF 初始化失敗: ${e.message}`);
-      } finally {
-        setLoading(false);
+    if (phoneVerified === false) {
+      // 檢查當前路由，避免在已經在手機驗證頁面時重複重導向
+      const currentPath = window.location.pathname;
+      if (currentPath !== "/phone-verification") {
+        console.log("用戶未驗證手機，重導向到手機驗證頁面");
+        window.location.href = "/phone-verification";
       }
-    };
-    initializeLiff();
-  }, []);
+    }
+  }, [isLoggedIn, phoneVerified, liffError]);
 
   const handleLogin = () => {
     if (!agreedToTerms) {
@@ -52,16 +54,10 @@ function App() {
 
   const handleLogout = async () => {
     try {
-      setIsLoggedIn(false);
-      setProfile(null);
       setBackendMessage("");
       setError("");
-      setLoading(true);
 
-      if (liff.isInClient() || liff.isLoggedIn()) {
-        liff.logout();
-        await new Promise((resolve) => setTimeout(resolve, 200));
-      }
+      logout(); // 使用 LiffContext 的 logout
 
       localStorage.clear();
       sessionStorage.clear();
@@ -76,23 +72,6 @@ function App() {
     }
   };
 
-  const sendProfileToBackend = async (userProfile) => {
-    try {
-      const response = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId: userProfile.userId,
-          displayName: userProfile.displayName,
-        }),
-      });
-      const data = await response.json();
-      setBackendMessage(data.message);
-    } catch (err) {
-      setError(`無法連接到後端伺服器: ${err.message}`);
-    }
-  };
-
   return (
     <Router>
       <Routes>
@@ -101,22 +80,47 @@ function App() {
           path="/"
           element={
             loading ? (
-              <div>LIFF 載入中...</div>
-            ) : error ? (
-              <div className="error">錯誤: {error}</div>
-            ) : isLoggedIn ? (
-              <DashboardPage
-                profile={profile}
-                onLogout={handleLogout}
-                loading={loading}
-                backendMessage={backendMessage}
-              />
-            ) : (
+              <div style={{ padding: "20px", textAlign: "center" }}>
+                <div>LIFF 載入中...</div>
+              </div>
+            ) : displayError ? (
+              <div style={{ padding: "20px", textAlign: "center" }}>
+                <div className="error" style={{ marginBottom: "20px" }}>
+                  錯誤: {displayError}
+                </div>
+                <button
+                  onClick={() => window.location.reload()}
+                  style={{
+                    padding: "10px 20px",
+                    backgroundColor: "#1E90FF",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                  }}
+                >
+                  重新載入頁面
+                </button>
+              </div>
+            ) : !isLoggedIn ? (
               <LoginPage
                 onLogin={handleLogin}
                 error={error}
                 agreedToTerms={agreedToTerms}
                 setAgreedToTerms={setAgreedToTerms}
+              />
+            ) : phoneVerified === null ? (
+              <div>檢查用戶狀態中...</div>
+            ) : phoneVerified === false ? (
+              // 用戶已登入但未驗證手機，重導向到手機驗證頁面
+              <div>重導向到手機驗證頁面...</div>
+            ) : (
+              // 用戶已登入且已驗證手機，顯示儀表板
+              <DashboardPage
+                profile={userProfile}
+                onLogout={handleLogout}
+                loading={loading}
+                backendMessage={backendMessage}
               />
             )
           }
@@ -132,7 +136,7 @@ function App() {
           path="/dashboard"
           element={
             <DashboardPage
-              profile={profile}
+              profile={userProfile}
               onLogout={handleLogout}
               loading={loading}
               backendMessage={backendMessage}

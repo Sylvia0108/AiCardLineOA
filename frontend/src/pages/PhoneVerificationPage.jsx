@@ -1,38 +1,39 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Header from '../components/layout/Header';
-import EnterPhoneNumber from '../components/phone/EnterPhoneNumber';
-import EnterVerificationCode from '../components/phone/EnterVerificationCode';
-import VerificationSuccess from '../components/phone/VerificationSuccess';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Header from "../components/layout/Header";
+import EnterPhoneNumber from "../components/phone/EnterPhoneNumber";
+import EnterVerificationCode from "../components/phone/EnterVerificationCode";
+import VerificationSuccess from "../components/phone/VerificationSuccess";
+import { useLiff } from "../context/useLiff";
 
 const PhoneVerificationPage = () => {
   const [currentStep, setCurrentStep] = useState(1); // 1: 輸入手機號碼, 2: 輸入驗證碼, 3: 驗證成功
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [countryCode, setCountryCode] = useState('+886');
-  const [verificationCode, setVerificationCode] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [countryCode, setCountryCode] = useState("+886");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [resendTimer, setResendTimer] = useState(0);
-  
+
+  const { userProfile, setPhoneVerified } = useLiff();
   const navigate = useNavigate();
 
   // 發送驗證碼
   const handleSendCode = async (phone, country) => {
     setIsLoading(true);
-    setError('');
-    
+    setError("");
+
     try {
       // 模擬 API 調用 (快速測試)
-      await new Promise(resolve => setTimeout(resolve, 100));
-      
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
       setPhoneNumber(phone);
       setCountryCode(country);
       setCurrentStep(2);
-      
+
       // 開始倒計時
       setResendTimer(60);
       const timer = setInterval(() => {
-        setResendTimer(prev => {
+        setResendTimer((prev) => {
           if (prev <= 1) {
             clearInterval(timer);
             return 0;
@@ -40,9 +41,8 @@ const PhoneVerificationPage = () => {
           return prev - 1;
         });
       }, 1000);
-      
-    } catch (err) {
-      setError('發送驗證碼失敗，請重試');
+    } catch {
+      setError("發送驗證碼失敗，請重試");
     } finally {
       setIsLoading(false);
     }
@@ -56,39 +56,69 @@ const PhoneVerificationPage = () => {
   // 驗證驗證碼
   const handleVerifyCode = async (code) => {
     setIsLoading(true);
-    setError('');
-    
+    setError("");
+
     try {
-      // 模擬 API 調用 (快速測試)
-      await new Promise(resolve => setTimeout(resolve, 100));
-      
+      console.log("開始驗證手機號碼...");
+
       // 簡單驗證邏輯 (實際應該調用後端 API)
-      if (code === '123456') {
-        setVerificationCode(code);
-        setCurrentStep(3);
-      } else {
-        throw new Error('驗證碼不正確');
+      if (code !== "123456") {
+        throw new Error("驗證碼不正確");
       }
-      
-    } catch (err) {
-      setError('驗證碼不正確');
+
+      // 調用後端API更新用戶手機驗證狀態
+      if (!userProfile) {
+        throw new Error("用戶資訊不存在，請重新登入");
+      }
+
+      const fullPhoneNumber = `${countryCode}${phoneNumber}`;
+      console.log(
+        `呼叫手機驗證API: userId=${userProfile.userId}, phone=${fullPhoneNumber}, code=${code}`
+      );
+
+      const response = await fetch("/api/verify-phone", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: userProfile.userId,
+          phoneNumber: fullPhoneNumber,
+          verificationCode: code,
+        }),
+      });
+
+      const result = await response.json();
+      console.log("手機驗證API回應:", result);
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "手機驗證失敗");
+      }
+
+      setCurrentStep(3);
+      console.log("手機驗證成功，用戶狀態已更新");
+      setPhoneVerified(true); // 驗證成功時調用 setPhoneVerified
+    } catch (error) {
+      console.error("手機驗證失敗:", error);
+      setError(error.message || "驗證碼不正確");
     } finally {
       setIsLoading(false);
     }
   };
 
-  // 完成驗證，前往首頁
+  // 完成驗證，前往儀表板
   const handleComplete = () => {
-    navigate('/dashboard');
+    console.log("手機驗證流程完成，導向儀表板");
+    navigate("/dashboard");
   };
 
   // 返回上一步
   const handleBack = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
-      setError('');
+      setError("");
     } else {
-      navigate('/');
+      navigate("/");
     }
   };
 
@@ -96,7 +126,7 @@ const PhoneVerificationPage = () => {
     <div className="login-page">
       <div className="login-container">
         <Header />
-        
+
         {currentStep === 1 && (
           <EnterPhoneNumber
             onSendCode={handleSendCode}
@@ -105,7 +135,7 @@ const PhoneVerificationPage = () => {
             error={error}
           />
         )}
-        
+
         {currentStep === 2 && (
           <EnterVerificationCode
             phoneNumber={`${countryCode} ${phoneNumber}`}
@@ -117,14 +147,14 @@ const PhoneVerificationPage = () => {
             resendTimer={resendTimer}
           />
         )}
-        
+
         {currentStep === 3 && (
           <VerificationSuccess
             onComplete={handleComplete}
             onBack={handleBack}
           />
         )}
-        
+
         <div className="bottom-spacer" />
       </div>
     </div>

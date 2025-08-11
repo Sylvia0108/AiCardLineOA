@@ -4,6 +4,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import "./index.css";
 import App from "./App.jsx";
+import { LiffProvider } from "./context/LiffContext.jsx";
 
 // 創建 Material-UI 主題
 const theme = createTheme({
@@ -100,7 +101,9 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <App />
+      <LiffProvider>
+        <App />
+      </LiffProvider>
     </ThemeProvider>
   </StrictMode>
 );

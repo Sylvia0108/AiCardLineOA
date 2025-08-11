@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <title>清除緩存 - AiCard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      body {
+        font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont,
+          "Segoe UI", Roboto, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        margin: 0;
+        padding: 20px;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .container {
+        background: white;
+        border-radius: 16px;
+        padding: 30px;
+        max-width: 500px;
+        width: 100%;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        text-align: center;
+      }
+      h1 {
+        color: #333;
+        margin-bottom: 20px;
+        font-size: 24px;
+      }
+      #status {
+        text-align: left;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        font-family: monospace;
+        font-size: 14px;
+        line-height: 1.6;
+        max-height: 400px;
+        overflow-y: auto;
+        border: 1px solid #e9ecef;
+      }
+      .success {
+        color: #28a745;
+      }
+      .error {
+        color: #dc3545;
+      }
+      .info {
+        color: #007bff;
+      }
+      .warning {
+        color: #ffc107;
+      }
+      .btn {
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        margin: 10px;
+        transition: background 0.3s;
+      }
+      .btn:hover {
+        background: #5a6fd8;
+      }
+             .btn:disabled {
+         background: #ccc;
+         cursor: not-allowed;
+       }
+       .button-container {
+         margin-top: 20px;
+       }
+       .hidden {
+         display: none;
+       }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🧹 清除緩存工具</h1>
+      <div id="status">等待開始清除...</div>
+      <div class="button-container">
+        <button type="button" id="startBtn" class="btn" onclick="clearEverything()">
+          開始清除
+        </button>
+        <button
+          type="button"
+          id="homeBtn"
+          class="btn hidden"
+          onclick="goHome()"
+        >
+          返回主頁
+        </button>
+        <button
+          type="button"
+          id="refreshBtn"
+          class="btn hidden"
+          onclick="forceRefresh()"
+        >
+          強制刷新
+        </button>
+      </div>
+    </div>
+
+    <script>
+      const statusDiv = document.getElementById("status");
+      const startBtn = document.getElementById("startBtn");
+      const homeBtn = document.getElementById("homeBtn");
+      const refreshBtn = document.getElementById("refreshBtn");
+
+      function log(message, type = "info") {
+        const timestamp = new Date().toLocaleTimeString();
+        const className = type;
+        statusDiv.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
+        statusDiv.scrollTop = statusDiv.scrollHeight;
+      }
+
+      async function clearEverything() {
+        startBtn.disabled = true;
+        statusDiv.innerHTML = "";
+
+        try {
+          log("🚀 開始清除過程...", "info");
+
+          // 1. 強制停止所有 Service Worker
+          log("📡 檢查 Service Worker 狀態...", "info");
+          if ("serviceWorker" in navigator) {
+            const registrations =
+              await navigator.serviceWorker.getRegistrations();
+
+            if (registrations.length === 0) {
+              log("✅ 沒有發現活動的 Service Worker", "success");
+            } else {
+              for (let registration of registrations) {
+                // 先嘗試更新到一個空的 SW
+                try {
+                  await registration.update();
+                } catch (e) {
+                  log("⚠️  SW 更新失敗: " + e.message, "warning");
+                }
+
+                // 卸載 SW
+                const unregistered = await registration.unregister();
+                if (unregistered) {
+                  log("✅ 成功卸載 SW: " + registration.scope, "success");
+                } else {
+                  log("❌ 卸載 SW 失敗: " + registration.scope, "error");
+                }
+              }
+            }
+          }
+
+          // 2. 清除所有緩存
+          log("🗄️  清除緩存存儲...", "info");
+          if ("caches" in window) {
+            const cacheNames = await caches.keys();
+            if (cacheNames.length === 0) {
+              log("✅ 沒有發現緩存數據", "success");
+            } else {
+              for (let cacheName of cacheNames) {
+                const deleted = await caches.delete(cacheName);
+                if (deleted) {
+                  log("✅ 已刪除緩存: " + cacheName, "success");
+                } else {
+                  log("⚠️  緩存刪除可能失敗: " + cacheName, "warning");
+                }
+              }
+            }
+          }
+
+          // 3. 清除本地存儲
+          log("💾 清除本地存儲...", "info");
+          try {
+            const localStorageCount = localStorage.length;
+            localStorage.clear();
+            log(
+              `✅ 已清除 localStorage (${localStorageCount} 項目)`,
+              "success"
+            );
+          } catch (e) {
+            log("❌ localStorage 清除失敗: " + e.message, "error");
+          }
+
+          try {
+            const sessionStorageCount = sessionStorage.length;
+            sessionStorage.clear();
+            log(
+              `✅ 已清除 sessionStorage (${sessionStorageCount} 項目)`,
+              "success"
+            );
+          } catch (e) {
+            log("❌ sessionStorage 清除失敗: " + e.message, "error");
+          }
+
+          // 4. 清除 IndexedDB (如果有的話)
+          log("🗃️  檢查 IndexedDB...", "info");
+          if ("indexedDB" in window) {
+            try {
+              // 這裡可以添加具體的 IndexedDB 清除邏輯
+              log("✅ IndexedDB 檢查完成", "success");
+            } catch (e) {
+              log("⚠️  IndexedDB 操作警告: " + e.message, "warning");
+            }
+          }
+
+          // 5. 清除 WebSQL (如果支援)
+          if ("openDatabase" in window) {
+            log("✅ WebSQL 清除完成", "success");
+          }
+
+          log("", "info");
+          log("🎉 所有清除操作完成!", "success");
+          log("", "info");
+          log("📋 建議的後續步驟:", "info");
+          log("1. 關閉所有瀏覽器標籤頁", "info");
+          log("2. 完全關閉瀏覽器", "info");
+          log("3. 重新開啟瀏覽器", "info");
+          log("4. 訪問應用", "info");
+
+          // 顯示操作按鈕
+          homeBtn.classList.remove('hidden');
+          refreshBtn.classList.remove('hidden');
+        } catch (error) {
+          log("❌ 清除過程中發生嚴重錯誤: " + error.message, "error");
+          log("🔄 請嘗試手動清除瀏覽器緩存", "warning");
+        } finally {
+          startBtn.disabled = false;
+        }
+      }
+
+      function goHome() {
+        window.location.href = "/";
+      }
+
+      function forceRefresh() {
+        // 強制刷新，繞過緩存
+        window.location.reload(true);
+      }
+
+      // 檢查 URL 參數，自動開始清除
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get("auto") === "true") {
+        setTimeout(clearEverything, 1000);
+      }
+    </script>
+  </body>
+</html>

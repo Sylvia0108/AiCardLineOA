@@ -1,3 +1,5 @@
+/* eslint-env serviceworker */
+/* global clients */
 // Service Worker for AicardLiff PWA
 const CACHE_NAME = "aicard-liff-v1";
 const urlsToCache = [
@@ -48,6 +50,25 @@ self.addEventListener("activate", (event) => {
 
 // 攔截請求 - 提供緩存優先策略
 self.addEventListener("fetch", (event) => {
+  // 檢查是否為開發環境的特殊資源
+  const isDevelopmentResource =
+    event.request.url.includes("@vite/client") ||
+    event.request.url.includes("@react-refresh") ||
+    event.request.url.includes("__vite_ping") ||
+    event.request.url.includes("node_modules/.vite") ||
+    event.request.url.includes("/@fs/") ||
+    event.request.url.includes("/@id/") ||
+    (event.request.url.includes("localhost") &&
+      (event.request.url.includes("?import") ||
+        event.request.url.includes("?t="))) ||
+    (event.request.url.includes("/src/") &&
+      event.request.url.includes("localhost:5173"));
+
+  // 如果是開發環境資源，直接通過不攔截
+  if (isDevelopmentResource) {
+    return;
+  }
+
   // 只攔截同源請求和靜態資源
   if (event.request.url.startsWith(self.location.origin)) {
     event.respondWith(

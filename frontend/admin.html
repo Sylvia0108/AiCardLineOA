@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AiCard - 用戶資料管理</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont,
+          "Segoe UI", Roboto, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .header {
+        background: white;
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .card {
+        background: white;
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .btn {
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        margin: 5px;
+        transition: background 0.3s;
+      }
+
+      .btn:hover {
+        background: #5a6fd8;
+      }
+
+      .btn-danger {
+        background: #e74c3c;
+      }
+
+      .btn-danger:hover {
+        background: #c0392b;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      .stat-item {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+      }
+
+      .stat-value {
+        font-size: 24px;
+        font-weight: bold;
+        color: #667eea;
+      }
+
+      .stat-label {
+        font-size: 14px;
+        color: #666;
+        margin-top: 5px;
+      }
+
+      .user-list {
+        display: grid;
+        gap: 15px;
+      }
+
+      .user-item {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .user-info h3 {
+        margin-bottom: 5px;
+        color: #333;
+      }
+
+      .user-info p {
+        color: #666;
+        font-size: 14px;
+        margin: 2px 0;
+      }
+
+      .loading {
+        text-align: center;
+        padding: 40px;
+        font-size: 18px;
+        color: #666;
+      }
+
+      .error {
+        background: #f8d7da;
+        color: #721c24;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+      }
+
+      .success {
+        background: #d4edda;
+        color: #155724;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+      }
+
+      .json-viewer {
+        background: #2d3748;
+        color: #e2e8f0;
+        padding: 20px;
+        border-radius: 8px;
+        font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+        font-size: 14px;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        max-height: 400px;
+        overflow-y: auto;
+      }
+
+      .auto-refresh {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .button-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .refresh-indicator {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #28a745;
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🗄️ AiCard 用戶資料管理</h1>
+        <p>即時查看和管理 userDatabase 中的所有用戶資料</p>
+        <div class="auto-refresh">
+          <span>自動刷新</span>
+          <div class="refresh-indicator"></div>
+          <span id="lastUpdate">載入中...</span>
+        </div>
+      </div>
+
+      <div id="message"></div>
+
+      <div class="card">
+        <h2>📊 伺服器統計</h2>
+        <div class="stats" id="serverStats">
+          <div class="loading">載入統計資料中...</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="button-container">
+          <h2>👥 用戶列表</h2>
+          <div>
+            <button type="button" class="btn" onclick="refreshData()">
+              🔄 手動刷新
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              onclick="clearDatabase()"
+            >
+              🗑️ 清空資料庫
+            </button>
+          </div>
+        </div>
+        <div id="userList">
+          <div class="loading">載入用戶資料中...</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>📋 原始JSON資料</h2>
+        <div id="jsonData" class="json-viewer">載入中...</div>
+      </div>
+    </div>
+
+    <script>
+      let autoRefreshInterval;
+
+      async function fetchData(endpoint) {
+        try {
+          const response = await fetch(`/api${endpoint}`);
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          }
+          return await response.json();
+        } catch (error) {
+          throw new Error(`API 請求失敗: ${error.message}`);
+        }
+      }
+
+      function showMessage(message, type = "success") {
+        const messageDiv = document.getElementById("message");
+        messageDiv.innerHTML = `<div class="${type}">${message}</div>`;
+        setTimeout(() => {
+          messageDiv.innerHTML = "";
+        }, 3000);
+      }
+
+      function formatTime(dateString) {
+        return new Date(dateString).toLocaleString("zh-TW");
+      }
+
+      function formatUptime(seconds) {
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${hours}時${minutes}分${secs}秒`;
+      }
+
+      function formatBytes(bytes) {
+        const sizes = ["Bytes", "KB", "MB", "GB"];
+        if (bytes === 0) return "0 Bytes";
+        const i = Math.floor(Math.log(bytes) / Math.log(1024));
+        return (
+          Math.round((bytes / Math.pow(1024, i)) * 100) / 100 + " " + sizes[i]
+        );
+      }
+
+      async function loadServerStats() {
+        try {
+          const stats = await fetchData("/status");
+          const statsHTML = `
+                    <div class="stat-item">
+                        <div class="stat-value">${stats.totalUsers}</div>
+                        <div class="stat-label">總用戶數</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">${formatUptime(
+                          stats.uptime
+                        )}</div>
+                        <div class="stat-label">運行時間</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">${formatBytes(
+                          stats.memoryUsage.heapUsed
+                        )}</div>
+                        <div class="stat-label">記憶體使用</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">${
+                          stats.lastRegistration
+                            ? formatTime(stats.lastRegistration)
+                            : "無"
+                        }</div>
+                        <div class="stat-label">最後註冊時間</div>
+                    </div>
+                `;
+          document.getElementById("serverStats").innerHTML = statsHTML;
+        } catch (error) {
+          document.getElementById(
+            "serverStats"
+          ).innerHTML = `<div class="error">載入統計資料失敗: ${error.message}</div>`;
+        }
+      }
+
+      async function loadUsers() {
+        try {
+          const data = await fetchData("/users");
+          const userListDiv = document.getElementById("userList");
+          const jsonDataDiv = document.getElementById("jsonData");
+
+          if (data.users.length === 0) {
+            userListDiv.innerHTML =
+              '<div class="loading">📭 目前沒有用戶資料</div>';
+          } else {
+            const usersHTML = data.users
+              .map(
+                (user) => `
+                        <div class="user-item">
+                            <div class="user-info">
+                                <h3>👤 ${user.displayName}</h3>
+                                <p><strong>用戶ID:</strong> ${user.userId}</p>
+                                <p><strong>註冊時間:</strong> ${formatTime(
+                                  user.registeredAt
+                                )}</p>
+                            </div>
+                            <button class="btn" onclick="viewUser('${
+                              user.userId
+                            }')">📄 查看詳情</button>
+                        </div>
+                    `
+              )
+              .join("");
+            userListDiv.innerHTML = usersHTML;
+          }
+
+          // 顯示原始JSON
+          jsonDataDiv.textContent = JSON.stringify(data, null, 2);
+
+          // 更新最後更新時間
+          document.getElementById("lastUpdate").textContent =
+            "最後更新: " + new Date().toLocaleTimeString("zh-TW");
+        } catch (error) {
+          document.getElementById(
+            "userList"
+          ).innerHTML = `<div class="error">載入用戶資料失敗: ${error.message}</div>`;
+          document.getElementById(
+            "jsonData"
+          ).textContent = `錯誤: ${error.message}`;
+        }
+      }
+
+      async function viewUser(userId) {
+        try {
+          const user = await fetchData(`/users/${userId}`);
+          alert(`用戶詳細資料:\n\n${JSON.stringify(user, null, 2)}`);
+        } catch (error) {
+          showMessage(`查看用戶失敗: ${error.message}`, "error");
+        }
+      }
+
+      async function clearDatabase() {
+        if (!confirm("⚠️ 確定要清空所有用戶資料嗎？此操作無法復原！")) {
+          return;
+        }
+
+        try {
+          const response = await fetch("/api/users", {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          }
+
+          const result = await response.json();
+          showMessage(`✅ ${result.message}`, "success");
+          refreshData();
+        } catch (error) {
+          showMessage(`清空資料庫失敗: ${error.message}`, "error");
+        }
+      }
+
+      async function refreshData() {
+        await Promise.all([loadServerStats(), loadUsers()]);
+      }
+
+      function startAutoRefresh() {
+        // 每5秒自動刷新
+        autoRefreshInterval = setInterval(refreshData, 5000);
+      }
+
+      function stopAutoRefresh() {
+        if (autoRefreshInterval) {
+          clearInterval(autoRefreshInterval);
+        }
+      }
+
+      // 頁面載入時初始化
+      document.addEventListener("DOMContentLoaded", function () {
+        refreshData();
+        startAutoRefresh();
+      });
+
+      // 頁面卸載時停止自動刷新
+      window.addEventListener("beforeunload", stopAutoRefresh);
+
+      // 頁面可見性變化時控制自動刷新
+      document.addEventListener("visibilitychange", function () {
+        if (document.hidden) {
+          stopAutoRefresh();
+        } else {
+          startAutoRefresh();
+          refreshData();
+        }
+      });
+    </script>
+  </body>
+</html>

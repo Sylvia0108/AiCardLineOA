@@ -59,50 +59,27 @@
 
     <!-- Service Worker Registration -->
     <script>
-      // 註冊 Service Worker (開發時可暫時禁用以避免緩存問題)
-      if ("serviceWorker" in navigator && location.hostname !== "localhost") {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker
-            .register("/sw.js")
-            .then((registration) => {
-              console.log("SW registered: ", registration);
-
-              // 檢查 Service Worker 更新
-              registration.addEventListener("updatefound", () => {
-                const newWorker = registration.installing;
-                if (newWorker) {
-                  newWorker.addEventListener("statechange", () => {
-                    if (
-                      newWorker.state === "installed" &&
-                      navigator.serviceWorker.controller
-                    ) {
-                      // 新版本可用，提示用戶刷新
-                      if (confirm("應用有新版本可用，是否立即更新？")) {
-                        newWorker.postMessage({ type: "SKIP_WAITING" });
-                        window.location.reload();
-                      }
-                    }
-                  });
-                }
-              });
-            })
-            .catch((registrationError) => {
-              console.log("SW registration failed: ", registrationError);
-            });
-        });
-
-        // 監聽 Service Worker 控制器變化
-        navigator.serviceWorker.addEventListener("controllerchange", () => {
-          window.location.reload();
-        });
-      } else if ("serviceWorker" in navigator && location.hostname === "localhost") {
-        // 在開發環境中卸載所有 Service Worker
+      // 完全禁用 Service Worker 直到開發完成
+      if ("serviceWorker" in navigator) {
+        // 卸載所有現有的 Service Worker
         navigator.serviceWorker.getRegistrations().then(function(registrations) {
           for(let registration of registrations) {
             registration.unregister();
-            console.log("SW unregistered for development");
+            console.log("SW unregistered:", registration.scope);
           }
         });
+        
+        // 清除所有 Service Worker 控制的緩存
+        if ('caches' in window) {
+          caches.keys().then(function(cacheNames) {
+            return Promise.all(
+              cacheNames.map(function(cacheName) {
+                console.log("Deleting cache:", cacheName);
+                return caches.delete(cacheName);
+              })
+            );
+          });
+        }
       }
 
       // 處理 PWA 安裝提示
