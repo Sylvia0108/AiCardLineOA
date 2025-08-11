@@ -1,0 +1,242 @@
+/* VerificationSuccess 組件樣式 */
+.verification-success-card {
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0px 25px 50px -12px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding: 40px 24px;
+  width: 100%;
+  max-width: 336px;
+  margin: 0 auto;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.back-button {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #374151;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.back-button:hover {
+  background-color: #f3f4f6;
+  color: #1f2937;
+}
+
+.success-icon {
+  width: 96px;
+  height: 96px;
+  background-color: #bbf7d0;
+  border-radius: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 16px 0;
+  animation: successPulse 1s ease-in-out;
+}
+
+.success-checkmark {
+  font-size: 48px;
+  color: #10b981;
+  font-weight: bold;
+  animation: checkmarkPop 0.6s ease-in-out 0.3s both;
+}
+
+@keyframes successPulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes checkmarkPop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.success-title {
+  color: #10b981;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 32px;
+  margin: 0;
+  text-align: center;
+  animation: slideUp 0.6s ease-in-out 0.5s both;
+}
+
+.success-description {
+  color: #6b7280;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  margin: 0;
+  text-align: center;
+  animation: slideUp 0.6s ease-in-out 0.7s both;
+}
+
+.complete-button {
+  background-color: #3b82f6;
+  border: none;
+  border-radius: 12px;
+  color: #ffffff;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 16px 32px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  animation: slideUp 0.6s ease-in-out 0.9s both;
+}
+
+.complete-button:hover {
+  background-color: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+}
+
+.complete-button:active {
+  transform: translateY(0);
+}
+
+.countdown-text {
+  color: #9ca3af;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  text-align: center;
+  margin: 0;
+  animation: slideUp 0.6s ease-in-out 1.1s both;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 響應式設計 - 手機螢幕 */
+@media (max-width: 480px) {
+  .verification-success-card {
+    padding: 32px 20px;
+    gap: 28px;
+    max-width: 320px;
+    border-radius: 16px;
+  }
+  
+  .back-button {
+    top: 20px;
+    left: 20px;
+    font-size: 20px;
+  }
+  
+  .success-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+  }
+  
+  .success-checkmark {
+    font-size: 40px;
+  }
+  
+  .success-title {
+    font-size: 24px;
+    line-height: 28px;
+  }
+  
+  .success-description {
+    font-size: 14px;
+    line-height: 20px;
+  }
+  
+  .complete-button {
+    font-size: 15px;
+    padding: 14px 24px;
+    border-radius: 8px;
+  }
+  
+  .countdown-text {
+    font-size: 13px;
+  }
+}
+
+/* 極小螢幕 */
+@media (max-width: 375px) {
+  .verification-success-card {
+    padding: 28px 18px;
+    gap: 24px;
+    max-width: 300px;
+  }
+  
+  .back-button {
+    top: 18px;
+    left: 18px;
+    font-size: 18px;
+  }
+  
+  .success-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 36px;
+  }
+  
+  .success-checkmark {
+    font-size: 36px;
+  }
+  
+  .success-title {
+    font-size: 20px;
+    line-height: 24px;
+  }
+  
+  .success-description {
+    font-size: 13px;
+    line-height: 18px;
+  }
+  
+  .complete-button {
+    font-size: 14px;
+    padding: 12px 20px;
+  }
+  
+  .countdown-text {
+    font-size: 12px;
+  }
+}

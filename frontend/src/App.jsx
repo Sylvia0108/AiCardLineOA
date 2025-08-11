@@ -6,6 +6,7 @@ import "./App.css";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import LiffLoginRedirect from "./pages/LiffLoginRedirect"; // ✅ 新增的路由頁面
+import PhoneVerificationPage from "./pages/PhoneVerificationPage"; // ✅ 手機驗證頁面
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -121,6 +122,20 @@ function App() {
         />
         {/* ✅ Rich Menu 用快速登入頁 */}
         <Route path="/liff-login" element={<LiffLoginRedirect />} />
+        {/* ✅ 手機驗證頁面 */}
+        <Route path="/phone-verification" element={<PhoneVerificationPage />} />
+        {/* ✅ 儀表板頁面 */}
+        <Route 
+          path="/dashboard" 
+          element={
+            <DashboardPage
+              profile={profile}
+              onLogout={handleLogout}
+              loading={loading}
+              backendMessage={backendMessage}
+            />
+          } 
+        />
       </Routes>
     </Router>
   );
