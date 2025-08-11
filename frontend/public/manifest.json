@@ -1,11 +1,11 @@
 {
-  "name": "AicardLiff",
-  "short_name": "AicardLiff",
-  "description": "AicardLiff - 您的智能卡片管理應用",
+  "name": "AiCard",
+  "short_name": "AiCard",
+  "description": "AiCard - 您的智能卡片管理應用",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#1a84ea",
-  "theme_color": "#1a84ea",
+  "background_color": "#1E90FF",
+  "theme_color": "#1E90FF",
   "orientation": "portrait-primary",
   "scope": "/",
   "lang": "zh-TW",
@@ -16,40 +16,9 @@
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
-    },
-    {
-      "src": "/android-chrome-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/android-chrome-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/apple-touch-icon.png",
-      "sizes": "180x180",
-      "type": "image/png",
-      "purpose": "any"
     }
   ],
-  "screenshots": [
-    {
-      "src": "/screenshot-mobile.png",
-      "sizes": "375x812",
-      "type": "image/png",
-      "platform": "narrow"
-    },
-    {
-      "src": "/screenshot-desktop.png",
-      "sizes": "1280x800",
-      "type": "image/png",
-      "platform": "wide"
-    }
-  ],
+
   "shortcuts": [
     {
       "name": "下載頁面",
@@ -59,7 +28,8 @@
       "icons": [
         {
           "src": "/vite.svg",
-          "sizes": "96x96"
+          "sizes": "any",
+          "type": "image/svg+xml"
         }
       ]
     }

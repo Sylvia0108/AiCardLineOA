@@ -6,28 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" >
 
     <!-- PWA Meta Tags -->
-    <title>AicardLiff - 智能卡片管理</title>
-    <meta name="description" content="AicardLiff - 您的智能卡片管理應用" >
+    <title>AiCard - 智能卡片管理</title>
+    <meta name="description" content="AiCard - 您的智能卡片管理應用" >
     <meta name="keywords" content="卡片管理,智能應用,PWA,移動應用" >
-    <meta name="author" content="AicardLiff Team">
+    <meta name="author" content="AiCard Team">
 
     <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json" >
 
     <!-- Apple Touch Icon -->
     <link rel="apple-touch-icon" href="/vite.svg">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default" >
-    <meta name="apple-mobile-web-app-title" content="AicardLiff" >
+    <meta name="apple-mobile-web-app-title" content="AiCard" >
 
     <!-- Microsoft Tile -->
     <meta name="msapplication-TileImage" content="/vite.svg" >
-    <meta name="msapplication-TileColor" content="#1a84ea" >
+    <meta name="msapplication-TileColor" content="#1E90FF" >
 
     <!-- Theme Colors -->
-    <meta name="theme-color" content="#1a84ea" >
-    <meta name="msapplication-navbutton-color" content="#1a84ea" >
-    <meta name="apple-mobile-web-app-status-bar-style" content="#1a84ea" >
+    <meta name="theme-color" content="#1E90FF" >
+    <meta name="msapplication-navbutton-color" content="#1E90FF" >
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" >
 
     <!-- Prevent Zoom -->
     <meta
@@ -36,20 +37,20 @@
     >
 
     <!-- Social Media Meta Tags -->
-    <meta property="og:title" content="AicardLiff - 智能卡片管理" >
+    <meta property="og:title" content="AiCard - 智能卡片管理" >
     <meta
       property="og:description"
-      content="AicardLiff - 您的智能卡片管理應用"
+      content="AiCard - 您的智能卡片管理應用"
     >
     <meta property="og:type" content="website">
     <meta property="og:image" content="/vite.svg">
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" >
-    <meta name="twitter:title" content="AicardLiff - 智能卡片管理" >
+    <meta name="twitter:title" content="AiCard - 智能卡片管理" >
     <meta
       name="twitter:description"
-      content="AicardLiff - 您的智能卡片管理應用">
+      content="AiCard - 您的智能卡片管理應用">
     <meta name="twitter:image" content="/vite.svg">
   </head>
   <body>
@@ -58,8 +59,8 @@
 
     <!-- Service Worker Registration -->
     <script>
-      // 註冊 Service Worker
-      if ("serviceWorker" in navigator) {
+      // 註冊 Service Worker (開發時可暫時禁用以避免緩存問題)
+      if ("serviceWorker" in navigator && location.hostname !== "localhost") {
         window.addEventListener("load", () => {
           navigator.serviceWorker
             .register("/sw.js")
@@ -94,6 +95,14 @@
         navigator.serviceWorker.addEventListener("controllerchange", () => {
           window.location.reload();
         });
+      } else if ("serviceWorker" in navigator && location.hostname === "localhost") {
+        // 在開發環境中卸載所有 Service Worker
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+          for(let registration of registrations) {
+            registration.unregister();
+            console.log("SW unregistered for development");
+          }
+        });
       }
 
       // 處理 PWA 安裝提示
@@ -116,7 +125,7 @@
         // 發送安裝成功通知
         if ("Notification" in window && Notification.permission === "granted") {
           new Notification("安裝成功！", {
-            body: "AicardLiff 已成功安裝到您的設備",
+            body: "AiCard 已成功安裝到您的設備",
             icon: "/vite.svg",
             badge: "/vite.svg",
           });

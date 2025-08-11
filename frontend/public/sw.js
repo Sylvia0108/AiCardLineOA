@@ -48,15 +48,82 @@ self.addEventListener("activate", (event) => {
 
 // 攔截請求 - 提供緩存優先策略
 self.addEventListener("fetch", (event) => {
-  event.respondWith(
-    caches.match(event.request).then((response) => {
-      // 如果有緩存，返回緩存，否則從網路獲取
-      if (response) {
-        return response;
-      }
-      return fetch(event.request);
-    })
-  );
+  // 只攔截同源請求和靜態資源
+  if (event.request.url.startsWith(self.location.origin)) {
+    event.respondWith(
+      caches
+        .match(event.request)
+        .then((response) => {
+          // 如果有緩存，返回緩存
+          if (response) {
+            return response;
+          }
+
+          // 從網路獲取，並處理錯誤
+          return fetch(event.request)
+            .then((networkResponse) => {
+              // 檢查響應是否有效
+              if (
+                !networkResponse ||
+                networkResponse.status !== 200 ||
+                networkResponse.type !== "basic"
+              ) {
+                return networkResponse;
+              }
+
+              // 克隆響應以便緩存
+              const responseToCache = networkResponse.clone();
+
+              // 只緩存靜態資源
+              if (
+                event.request.url.includes("/assets/") ||
+                event.request.url.includes(".js") ||
+                event.request.url.includes(".css") ||
+                event.request.url.includes(".svg")
+              ) {
+                caches.open(CACHE_NAME).then((cache) => {
+                  cache.put(event.request, responseToCache);
+                });
+              }
+
+              return networkResponse;
+            })
+            .catch((error) => {
+              console.log(
+                "Service Worker: Fetch failed for",
+                event.request.url,
+                error
+              );
+
+              // 對於 HTML 頁面，返回緩存的首頁或離線頁面
+              if (event.request.destination === "document") {
+                return (
+                  caches.match("/") ||
+                  new Response("離線模式，請檢查網路連接", {
+                    status: 503,
+                    statusText: "Service Unavailable",
+                  })
+                );
+              }
+
+              // 對於其他資源，返回錯誤
+              return new Response("Network error occurred", {
+                status: 408,
+                statusText: "Request Timeout",
+              });
+            });
+        })
+        .catch((error) => {
+          console.error("Service Worker: Cache match failed", error);
+          return fetch(event.request).catch(() => {
+            return new Response("Service Worker error", {
+              status: 503,
+              statusText: "Service Unavailable",
+            });
+          });
+        })
+    );
+  }
 });
 
 // 推送通知事件
@@ -64,7 +131,7 @@ self.addEventListener("push", (event) => {
   console.log("Service Worker: Push event received");
 
   const options = {
-    body: event.data ? event.data.text() : "AicardLiff 有新消息！",
+    body: event.data ? event.data.text() : "AiCard 有新消息！",
     icon: "/vite.svg",
     badge: "/vite.svg",
     vibrate: [100, 50, 100],
