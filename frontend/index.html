@@ -1,13 +1,150 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="zh-TW">
   <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+
+    <!-- PWA Meta Tags -->
+    <title>AicardLiff - 智能卡片管理</title>
+    <meta name="description" content="AicardLiff - 您的智能卡片管理應用" >
+    <meta name="keywords" content="卡片管理,智能應用,PWA,移動應用" >
+    <meta name="author" content="AicardLiff Team">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" >
+
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="/vite.svg">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" >
+    <meta name="apple-mobile-web-app-title" content="AicardLiff" >
+
+    <!-- Microsoft Tile -->
+    <meta name="msapplication-TileImage" content="/vite.svg" >
+    <meta name="msapplication-TileColor" content="#1a84ea" >
+
+    <!-- Theme Colors -->
+    <meta name="theme-color" content="#1a84ea" >
+    <meta name="msapplication-navbutton-color" content="#1a84ea" >
+    <meta name="apple-mobile-web-app-status-bar-style" content="#1a84ea" >
+
+    <!-- Prevent Zoom -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
+
+    <!-- Social Media Meta Tags -->
+    <meta property="og:title" content="AicardLiff - 智能卡片管理" >
+    <meta
+      property="og:description"
+      content="AicardLiff - 您的智能卡片管理應用"
+    >
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="/vite.svg">
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" >
+    <meta name="twitter:title" content="AicardLiff - 智能卡片管理" >
+    <meta
+      name="twitter:description"
+      content="AicardLiff - 您的智能卡片管理應用">
+    <meta name="twitter:image" content="/vite.svg">
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+      // 註冊 Service Worker
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/sw.js")
+            .then((registration) => {
+              console.log("SW registered: ", registration);
+
+              // 檢查 Service Worker 更新
+              registration.addEventListener("updatefound", () => {
+                const newWorker = registration.installing;
+                if (newWorker) {
+                  newWorker.addEventListener("statechange", () => {
+                    if (
+                      newWorker.state === "installed" &&
+                      navigator.serviceWorker.controller
+                    ) {
+                      // 新版本可用，提示用戶刷新
+                      if (confirm("應用有新版本可用，是否立即更新？")) {
+                        newWorker.postMessage({ type: "SKIP_WAITING" });
+                        window.location.reload();
+                      }
+                    }
+                  });
+                }
+              });
+            })
+            .catch((registrationError) => {
+              console.log("SW registration failed: ", registrationError);
+            });
+        });
+
+        // 監聽 Service Worker 控制器變化
+        navigator.serviceWorker.addEventListener("controllerchange", () => {
+          window.location.reload();
+        });
+      }
+
+      // 處理 PWA 安裝提示
+      let deferredPrompt;
+      window.addEventListener("beforeinstallprompt", (e) => {
+        console.log("PWA install prompt triggered");
+        e.preventDefault();
+        deferredPrompt = e;
+
+        // 將事件傳遞給應用
+        window.dispatchEvent(
+          new CustomEvent("pwa-install-available", { detail: e })
+        );
+      });
+
+      // PWA 安裝完成事件
+      window.addEventListener("appinstalled", (evt) => {
+        console.log("PWA was installed successfully");
+
+        // 發送安裝成功通知
+        if ("Notification" in window && Notification.permission === "granted") {
+          new Notification("安裝成功！", {
+            body: "AicardLiff 已成功安裝到您的設備",
+            icon: "/vite.svg",
+            badge: "/vite.svg",
+          });
+        }
+      });
+
+      // 監聽網路狀態變化
+      window.addEventListener("online", () => {
+        console.log("Network: Online");
+        if ("Notification" in window && Notification.permission === "granted") {
+          new Notification("網路已連接", {
+            body: "您現在可以正常使用所有功能",
+            icon: "/vite.svg",
+            tag: "network-status",
+          });
+        }
+      });
+
+      window.addEventListener("offline", () => {
+        console.log("Network: Offline");
+        if ("Notification" in window && Notification.permission === "granted") {
+          new Notification("網路已斷開", {
+            body: "部分功能可能無法使用",
+            icon: "/vite.svg",
+            tag: "network-status",
+          });
+        }
+      });
+    </script>
   </body>
 </html>

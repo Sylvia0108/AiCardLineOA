@@ -6,6 +6,7 @@ import "./App.css";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import LiffLoginRedirect from "./pages/LiffLoginRedirect"; // ✅ 新增的路由頁面
+import DownloadPage from "./pages/DownloadPage"; // ✅ 下載頁面
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -121,6 +122,7 @@ function App() {
         />
         {/* ✅ Rich Menu 用快速登入頁 */}
         <Route path="/liff-login" element={<LiffLoginRedirect />} />
+        <Route path="/download" element={<DownloadPage />} />
       </Routes>
     </Router>
   );
