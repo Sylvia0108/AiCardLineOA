@@ -1,0 +1,493 @@
+/* EnterPhoneNumber 組件樣式 - 基於生成代碼的設計 */
+
+/* 主卡片容器 */
+.phone-verification-card {
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0px 25px 50px -12px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 40px 24px;
+  width: 100%;
+  max-width: 336px;
+  margin: 0 auto;
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* 返回按鈕 */
+.back-button {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #374151;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.back-button:hover {
+  background-color: #f3f4f6;
+  color: #1f2937;
+}
+
+/* 簡約手機圖標設計 */
+.icon-stack {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  margin: 16px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-background {
+  position: absolute;
+  width: 96px;
+  height: 96px;
+  border-radius: 48px;
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  border: 2px solid #e0e7ff;
+}
+
+.icon-foreground {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+}
+
+/* 簡約手機SVG圖標 */
+.phone-icon {
+  width: 32px;
+  height: 32px;
+  fill: #3b82f6;
+  stroke: #3b82f6;
+  stroke-width: 0.5;
+}
+
+/* 標題樣式 */
+.verification-title {
+  color: #000000;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 28px;
+  margin: 0;
+  text-align: center;
+}
+
+.verification-instructions {
+  color: #6b7280;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0;
+  text-align: center;
+  max-width: 280px;
+}
+
+/* 表單樣式 */
+.verification-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-label {
+  color: #374151;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  text-align: left;
+  margin: 0;
+}
+
+/* 手機輸入容器 */
+.phone-input-container {
+  display: flex;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  background-color: #ffffff;
+  min-height: 48px;
+}
+
+.phone-input-container:focus-within {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* 國家選擇器 */
+.country-selector {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-right: 1px solid #e2e8f0;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  color: #475569;
+  cursor: pointer;
+  user-select: none;
+  min-width: 85px;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.country-selector:hover {
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+}
+
+.country-flag {
+  font-size: 16px;
+}
+
+.country-code {
+  font-weight: 500;
+  color: #334155;
+}
+
+.dropdown-arrow {
+  font-size: 10px;
+  color: #94a3b8;
+  margin-left: auto;
+  transform: rotate(0deg);
+  transition: transform 0.2s ease;
+}
+
+.country-selector:hover .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+/* 手機號碼輸入框 */
+.phone-input {
+  flex: 1;
+  border: none;
+  padding: 14px 16px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  color: #1f2937;
+  outline: none;
+  background-color: transparent;
+  letter-spacing: 0.5px;
+}
+
+.phone-input::placeholder {
+  color: #9ca3af;
+  font-weight: 400;
+}
+
+.phone-input:disabled {
+  background-color: #f9fafb;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+/* 提交按鈕 */
+.submit-button {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border: none;
+  border-radius: 12px;
+  color: #ffffff;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 8px;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+}
+
+.submit-button:hover:not(.disabled) {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35);
+}
+
+.submit-button:active:not(.disabled) {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+}
+
+.submit-button.disabled {
+  background: linear-gradient(135deg, #d1d5db 0%, #9ca3af 100%);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 錯誤訊息 */
+.error-message {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #dc2626;
+  font-size: 14px;
+  padding: 12px;
+  text-align: center;
+  margin: -8px 0;
+  font-family: 'Roboto', sans-serif;
+  animation: fadeInShake 0.5s ease;
+}
+
+/* 成功訊息 */
+.success-message {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  font-family: 'Roboto', sans-serif;
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.35);
+  z-index: 1000;
+  animation: slideDownBounce 0.6s ease;
+}
+
+/* 動畫效果 */
+@keyframes slideDownBounce {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-30px) scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(5px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeInShake {
+  0% {
+    opacity: 0;
+    transform: translateX(-4px);
+  }
+  25% {
+    opacity: 0.5;
+    transform: translateX(4px);
+  }
+  50% {
+    opacity: 0.75;
+    transform: translateX(-2px);
+  }
+  75% {
+    opacity: 0.9;
+    transform: translateX(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 響應式設計 - 平板 */
+@media (min-width: 481px) and (max-width: 768px) {
+  .phone-verification-card {
+    max-width: 380px;
+    padding: 44px 32px;
+  }
+  
+  .verification-title {
+    font-size: 26px;
+  }
+  
+  .verification-instructions {
+    font-size: 15px;
+    max-width: 320px;
+  }
+  
+  .country-selector {
+    min-width: 90px;
+    padding: 14px;
+  }
+  
+  .phone-input {
+    padding: 16px 18px;
+    font-size: 17px;
+  }
+}
+
+/* 響應式設計 - 手機螢幕 */
+@media (max-width: 480px) {
+  .phone-verification-card {
+    padding: 32px 20px;
+    gap: 20px;
+    max-width: 320px;
+    border-radius: 16px;
+  }
+  
+  .back-button {
+    top: 20px;
+    left: 20px;
+    font-size: 20px;
+  }
+  
+  .icon-stack {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .icon-background {
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+  }
+  
+  .icon-foreground {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .phone-icon {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .verification-title {
+    font-size: 20px;
+    line-height: 24px;
+  }
+  
+  .verification-instructions {
+    font-size: 13px;
+    line-height: 18px;
+    max-width: 250px;
+  }
+  
+  .form-label {
+    font-size: 13px;
+  }
+  
+  .phone-input-container {
+    border-radius: 10px;
+    min-height: 44px;
+  }
+  
+  .country-selector {
+    padding: 10px 8px;
+    font-size: 13px;
+    min-width: 75px;
+    gap: 4px;
+  }
+  
+  .country-flag {
+    font-size: 14px;
+  }
+  
+  .country-code {
+    font-size: 13px;
+  }
+  
+  .phone-input {
+    padding: 12px 14px;
+    font-size: 15px;
+  }
+  
+  .submit-button {
+    font-size: 15px;
+    padding: 14px;
+    border-radius: 10px;
+  }
+  
+  .success-message {
+    top: 16px;
+    font-size: 13px;
+    padding: 10px 20px;
+  }
+}
+
+/* 極小螢幕 (iPhone SE 等) */
+@media (max-width: 375px) {
+  .phone-verification-card {
+    padding: 28px 18px;
+    gap: 18px;
+    max-width: 300px;
+  }
+  
+  .back-button {
+    top: 18px;
+    left: 18px;
+    font-size: 18px;
+  }
+  
+  .icon-stack {
+    width: 72px;
+    height: 72px;
+  }
+  
+  .icon-background {
+    width: 72px;
+    height: 72px;
+    border-radius: 36px;
+  }
+  
+  .icon-foreground {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .phone-icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .verification-title {
+    font-size: 18px;
+    line-height: 22px;
+  }
+  
+  .verification-instructions {
+    font-size: 12px;
+    line-height: 16px;
+    max-width: 220px;
+  }
+  
+  .country-selector {
+    min-width: 70px;
+    padding: 8px 6px;
+    gap: 3px;
+  }
+  
+  .country-flag {
+    font-size: 13px;
+  }
+  
+  .phone-input {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+  
+  .submit-button {
+    font-size: 14px;
+    padding: 12px;
+  }
+}

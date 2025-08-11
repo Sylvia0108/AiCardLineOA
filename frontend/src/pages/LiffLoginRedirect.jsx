@@ -17,8 +17,8 @@ function LiffLoginRedirect() {
         if (!liff.isLoggedIn()) {
           liff.login(); // 跳轉到 LINE 授權畫面
         } else {
-          // 已登入，跳轉到儀表板
-          window.location.href = "/dashboard";
+          // 已登入，跳轉到手機驗證頁面
+          window.location.href = "/phone-verification";
         }
       } catch (error) {
         console.error("LIFF 初始化失敗:", error);

@@ -5,6 +5,9 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
+    // 允許 Cloudflare Tunnel 外部訪問
+    allowedHosts: ['.trycloudflare.com'],
+
     // 設定代理以解決開發時的跨域問題
     proxy: {
       // 將 /api 的請求轉發到後端伺服器
