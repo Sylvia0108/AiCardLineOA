@@ -18,6 +18,26 @@ const CodeInput = ({ length = 6, value = '', onChange, onComplete, hasError = fa
         newCodes.push('');
       }
       setCodes(newCodes);
+      
+      // 當 value 被清除時，重置游標到第一個輸入框，確保位置和第一次一樣
+      if (value === '' && newCodes.every(code => code === '')) {
+        setTimeout(() => {
+          if (inputRefs.current[0]) {
+            // 完全重置焦點狀態，確保和第一次一樣
+            inputRefs.current[0].blur();
+            setTimeout(() => {
+              inputRefs.current[0]?.focus();
+              // 強制設定樣式，確保位置正確
+              if (inputRefs.current[0]) {
+                inputRefs.current[0].style.textAlign = 'center';
+                inputRefs.current[0].style.lineHeight = 'normal';
+                inputRefs.current[0].style.color = '#1f2937';
+                inputRefs.current[0].style.webkitTextFillColor = '#1f2937';
+              }
+            }, 50);
+          }
+        }, 100);
+      }
     }
   }, [value, length]);
 
@@ -85,6 +105,10 @@ const CodeInput = ({ length = 6, value = '', onChange, onComplete, hasError = fa
         newCodes[index] = '';
         setCodes(newCodes);
         onChange(newCodes.join(''));
+        // 保持焦點在當前輸入框
+        setTimeout(() => {
+          inputRefs.current[index]?.focus();
+        }, 0);
       }
     } else if (e.key === 'ArrowLeft' && index > 0) {
       inputRefs.current[index - 1]?.focus();
@@ -131,6 +155,17 @@ const CodeInput = ({ length = 6, value = '', onChange, onComplete, hasError = fa
             onPaste={handlePaste}
             className={`code-input ${hasError ? 'error' : ''} ${code ? 'filled' : ''}`}
             autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck="false"
+            style={{ 
+              WebkitTextSecurity: 'none !important',
+              textSecurity: 'none !important',
+              WebkitAppearance: 'none',
+              appearance: 'none',
+              color: '#1f2937 !important',
+              WebkitTextFillColor: '#1f2937 !important'
+            }}
           />
         ))}
       </div>

@@ -1,0 +1,78 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+你是一名专业的前端架构师，任务是初始化一个现代化的前端工程，要求如下：
+
+---
+
+【工程目标】
+为多端应用开发构建一个基础工程框架，支持浏览器（H5）和 APP（通过 Capacitor），具备良好的状态管理、组件结构、样式、测试体系。
+
+---
+
+【技术栈要求】
+
+- 框架：React + TypeScript + Vite
+- 多端能力：使用 Capacitor 支持 App 打包（iOS/Android）
+- 状态管理：Redux Toolkit
+- UI 库：Ant Design Mobile（支持移动端）
+- 样式方案：Tailwind CSS（仅限 .tsx 文件中使用）
+- 路由方案：React Router v6
+- 包管理工具：npm
+
+---
+
+【项目结构建议】
+
+src/
+├── app/               # Redux store 配置与全局逻辑
+├── components/        # 可复用组件
+├── pages/             # 页面组件
+├── routes/            # 路由配置
+├── services/          # 与 API 交互的逻辑封装
+├── hooks/             # 自定义 Hooks
+├── assets/            # 图片、字体等静态资源
+├── styles/            # 全局样式、Tailwind 配置扩展
+└── utils/             # 工具函数库
+
+
+---
+
+【Capacitor 配置要求】
+- 集成 Capacitor 并初始化 iOS/Android 项目
+- 设置打包入口为 `dist/`（Vite 默认输出目录）
+- 配置 Capacitor 支持 Ant Mobile 的浏览器特性（如 viewport, safe-area）
+
+---
+
+【测试要求】
+
+✅ 单元测试：
+- 使用 Jest + React Testing Library
+- 所有组件与页面均需覆盖渲染与交互测试
+- 示例：按钮点击、表单输入校验等
+
+✅ E2E 测试：
+- 使用 Playwright（或可选 Cypress）
+- 模拟多页面跳转与流程场景（如登录 -> 首页 -> 明细页）
+
+---
+
+【额外要求】
+- 初始化项目时生成完整的 README.md，描述：
+  - 项目目标与使用技术
+  - 项目结构说明
+  - 如何开发、测试、构建、运行 Capacitor App
+
+---
+
+请按上述标准输出一套可用的前端工程初始化文件，包括：
+1. `package.json` 配置
+2. `vite.config.ts`
+3. Redux Toolkit 的初始配置（一个简单 Slice 示例）
+4. 一个基本的页面（如 LoginPage）与其组件
+5. 测试示例
+
+6. Capacitor 的配置文件 `capacitor.config.ts`

@@ -31,6 +31,24 @@ const EnterVerificationCode = ({
       // 延遲清除，讓用戶看到錯誤狀態
       setTimeout(() => {
         setVerificationCode('');
+        // 清除後立即重置焦點到第一個輸入框，確保位置和第一次一樣
+        setTimeout(() => {
+          const firstInput = document.querySelector('.code-input');
+          if (firstInput) {
+            // 先 blur 再 focus，確保完全重置
+            firstInput.blur();
+            setTimeout(() => {
+              firstInput.focus();
+              // 強制重新渲染輸入框樣式，確保和第一次一樣
+              firstInput.style.color = '#1f2937';
+              firstInput.style.webkitTextFillColor = '#1f2937';
+              firstInput.style.webkitTextSecurity = 'none';
+              firstInput.style.textSecurity = 'none';
+              firstInput.style.textAlign = 'center';
+              firstInput.style.lineHeight = 'normal';
+            }, 10);
+          }
+        }, 50);
       }, 1000);
     }
   }, [error, verificationCode.length]);

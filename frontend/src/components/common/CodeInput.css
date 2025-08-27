@@ -2,7 +2,8 @@
 .code-input-container {
   width: 100%;
   margin: 16px 0;
-  background: transparent; /* 確保容器背景透明 */
+  position: relative;
+  z-index: 9998;
 }
 
 .code-input-group {
@@ -12,7 +13,8 @@
   margin-bottom: 8px;
   max-width: 100%;
   overflow: visible;
-  background: transparent; /* 確保群組背景透明 */
+  position: relative;
+  z-index: 9998;
 }
 
 .code-input {
@@ -20,42 +22,62 @@
   height: 52px;
   border: 2px solid #e5e7eb;
   border-radius: 10px;
-  text-align: center;
+  text-align: center !important;
   font-size: 20px;
   font-weight: 600;
   font-family: 'Roboto', sans-serif;
   background-color: #ffffff;
-  transition: border-color 0.2s ease;
+  transition: all 0.2s ease;
   outline: none;
   flex-shrink: 0;
+  color: #1f2937 !important;
+  -webkit-text-fill-color: #1f2937 !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  position: relative;
+  z-index: 9999;
+  -webkit-text-security: none !important;
+  text-security: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
 }
 
 .code-input:focus {
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  color: #1f2937 !important;
+  -webkit-text-fill-color: #1f2937 !important;
+  z-index: 10000;
+  -webkit-text-security: none !important;
+  text-security: none !important;
 }
 
 .code-input.filled {
   border-color: #e5e7eb;
   background-color: #ffffff;
-  color: #1f2937;
+  color: #1f2937 !important;
+  -webkit-text-fill-color: #1f2937 !important;
+  -webkit-text-security: none !important;
+  text-security: none !important;
 }
 
-/* 錯誤狀態樣式 - 只讓個別輸入框有紅色邊框 */
 .code-input.error {
   border-color: #ef4444;
   background-color: #ffffff;
-  color: #1f2937;
+  color: #1f2937 !important;
+  -webkit-text-fill-color: #1f2937 !important;
+  -webkit-text-security: none !important;
+  text-security: none !important;
 }
 
-.code-input.error:focus {
+.code-input-container.error .code-input {
+  border-color: #ef4444;
+}
+
+.code-input-container.error .code-input:focus {
   border-color: #dc2626;
   box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
-}
-
-/* 移除容器層級的錯誤樣式，避免重複的背景效果 */
-.code-input-container.error {
-  /* 移除容器層級的錯誤樣式 */
 }
 
 /* 響應式設計 - 手機螢幕 */
@@ -69,6 +91,10 @@
     height: 44px;
     font-size: 18px;
     border-radius: 8px;
+    text-align: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
   }
 }
 

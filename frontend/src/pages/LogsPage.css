@@ -1,0 +1,192 @@
+.logs-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.logs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.logs-header h1 {
+  margin: 0;
+  color: #333;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.logs-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.download-btn, .clear-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.download-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.download-btn:hover {
+  background-color: #45a049;
+}
+
+.clear-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.clear-btn:hover {
+  background-color: #da190b;
+}
+
+.logs-stats {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+}
+
+.logs-content {
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  overflow: hidden;
+}
+
+.no-logs {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
+}
+
+.no-logs p {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.logs-list {
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.log-item {
+  border-bottom: 1px solid #e0e0e0;
+  padding: 20px;
+  transition: background-color 0.2s ease;
+}
+
+.log-item:hover {
+  background-color: #f8f9fa;
+}
+
+.log-item:last-child {
+  border-bottom: none;
+}
+
+.log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.log-number {
+  font-weight: 600;
+  color: #2196F3;
+  font-size: 14px;
+}
+
+.log-time {
+  color: #666;
+  font-size: 14px;
+}
+
+.log-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 15px;
+}
+
+.log-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.log-label {
+  font-weight: 500;
+  color: #555;
+  min-width: 80px;
+  font-size: 14px;
+}
+
+.log-value {
+  color: #333;
+  font-size: 14px;
+  word-break: break-all;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  .logs-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+  
+  .logs-stats {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .log-details {
+    grid-template-columns: 1fr;
+  }
+  
+  .log-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+}
+

@@ -1,0 +1,30 @@
+/* DashboardPage 專用樣式，確保不被其他CSS覆蓋 */
+.dashboard-page-container {
+  width: 384px !important;
+  height: 839px !important;
+  background-color: #ffffff !important;
+  display: flex !important;
+  flex-direction: column !important;
+  margin: 0 auto !important;
+  position: relative !important;
+}
+
+.dashboard-main-content {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  flex: 1 !important;
+  position: relative !important;
+  padding-top: 40px !important;
+  gap: 40px !important;
+}
+
+.dashboard-bottom-section {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  padding: 0 16px !important;
+}

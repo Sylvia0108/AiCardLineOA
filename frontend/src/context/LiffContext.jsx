@@ -7,6 +7,7 @@ export const LiffProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
   const [phoneVerified, setPhoneVerified] = useState(null);
+  const [userPhoneNumber, setUserPhoneNumber] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [initAttempted, setInitAttempted] = useState(false);

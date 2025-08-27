@@ -7,6 +7,7 @@ import DashboardPage from "./pages/DashboardPage";
 import DownloadPage from "./pages/DownloadPage";
 import PhoneVerificationPage from "./pages/PhoneVerificationPage";
 import LiffLoginRedirect from "./pages/LiffLoginRedirect";
+import LogsPage from "./pages/LogsPage";
 import { useLiff } from "./context/useLiff";
 
 function App() {
@@ -143,6 +144,8 @@ function App() {
             />
           }
         />
+        {/* ✅ 記錄頁面 */}
+        <Route path="/logs" element={<LogsPage />} />
       </Routes>
     </Router>
   );

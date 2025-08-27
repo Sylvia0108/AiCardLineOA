@@ -64,6 +64,7 @@ app.post("/api/login", (req, res) => {
         userId: existingUser.userId,
         displayName: existingUser.displayName,
         phoneVerified: existingUser.phoneVerified || false,
+        phoneNumber: existingUser.phoneNumber || null,
         registeredAt: existingUser.registeredAt,
       },
     });

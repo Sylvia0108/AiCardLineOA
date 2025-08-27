@@ -1,0 +1,25 @@
+/* 導航欄專用樣式，確保不被其他CSS覆蓋 */
+.nav-title {
+  font-family: 'Roboto', sans-serif !important;
+  font-weight: 600 !important; /* Figma設計稿指定為600 */
+  font-size: 20px !important; /* Figma設計稿指定為20px */
+  line-height: 1.4em !important;
+  color: #ffffff !important;
+  margin: 0 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+}
+
+/* 確保導航欄背景漸層正確顯示並填滿水平方向 */
+.bg-header-gradient {
+  background: linear-gradient(90deg, rgba(16, 163, 233, 1) 0%, rgba(37, 100, 234, 1) 100%) !important;
+  width: 100vw !important;
+  margin-left: calc(-50vw + 50%) !important;
+  margin-right: calc(-50vw + 50%) !important;
+}
+
+/* 增加導航欄的垂直高度 */
+.bg-header-gradient > div {
+  padding-top: 24px !important;
+  padding-bottom: 24px !important;
+}
